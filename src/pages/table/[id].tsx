@@ -3,10 +3,11 @@ import type { NextPage } from "next";
 import { AnimatePresence, motion } from "framer-motion";
 
 import type { TableDish, Dish } from "~/types";
-import { DishCard } from "~/components";
-import Dishes from "~/_data/dishes.json";
+import { DishCard, SearchBar } from "~/components";
+import dishes from "~/_data/dishes.json";
 
 const TablePage: NextPage = () => {
+  const [filteredDishes, setFilteredDishes] = useState<Dish[]>(dishes);
   const [selectedDishes, setSelectedDishes] = useState<TableDish[]>([]);
 
   const handleAddDish = useCallback(
@@ -36,37 +37,53 @@ const TablePage: NextPage = () => {
     );
   }, []);
 
+  const handleFilter = useCallback((search: string) => {
+    if (search === "") {
+      setFilteredDishes(dishes);
+      return;
+    }
+    setFilteredDishes(
+      dishes.filter((dish) => dish.name.toLowerCase().includes(search))
+    );
+  }, []);
+
   return (
-    <main className="m-auto min-h-screen w-min">
-      <h2 className="text-2xl">I tuoi piatti</h2>
-      <div className="mt-4 grid grid-cols-[repeat(3,max-content)] gap-1">
-        <AnimatePresence>
-          {selectedDishes.map((dish) => (
-            <motion.div
+    <main className="h-screen overflow-auto">
+      <div className="m-auto min-h-full max-w-3xl">
+        <h2 className="p-6 text-center text-3xl font-bold uppercase">
+          Il tuo tavolo
+        </h2>
+        <h2 className="p-6 text-2xl">I tuoi piatti</h2>
+        <div className="m-auto mt-4 grid w-min grid-cols-[repeat(3,max-content)] gap-1">
+          <AnimatePresence>
+            {selectedDishes.map((dish) => (
+              <motion.div
+                key={dish.id}
+                animate={{ scale: 1 }}
+                initial={{ scale: 0 }}
+                exit={{ scale: 0 }}
+              >
+                <DishCard
+                  onClick={() => handleRemoveDish(dish)}
+                  name={dish.name}
+                  quantity={dish.quantity}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+        <h2 className="mt-4 p-6 text-2xl">Piatti disponibili</h2>
+        <div className="m-auto mt-2 grid w-min grid-cols-[repeat(3,max-content)] gap-1 md:grid-cols-[repeat(6,max-content)]">
+          {filteredDishes.map((dish) => (
+            <DishCard
               key={dish.id}
-              animate={{ scale: 1 }}
-              initial={{ scale: 0 }}
-              exit={{ scale: 0 }}
-            >
-              <DishCard
-                onClick={() => handleRemoveDish(dish)}
-                name={dish.name}
-                quantity={dish.quantity}
-              />
-            </motion.div>
+              onClick={() => handleAddDish(dish)}
+              name={dish.name}
+            />
           ))}
-        </AnimatePresence>
+        </div>
       </div>
-      <h2 className="mt-4 text-2xl">Piatti disponibili</h2>
-      <div className="mt-2 grid grid-cols-[repeat(3,max-content)]  gap-1">
-        {Dishes.map((dish) => (
-          <DishCard
-            onClick={() => handleAddDish(dish)}
-            name={dish.name}
-            key={dish.id}
-          />
-        ))}
-      </div>
+      <SearchBar onSearch={(search) => handleFilter(search)} />
     </main>
   );
 };

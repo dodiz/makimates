@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { motion } from "framer-motion";
+
 type DishProps = {
   name: string;
   quantity?: number;
@@ -7,9 +9,10 @@ type DishProps = {
 
 export const DishCard = ({ onClick, name, quantity = 0 }: DishProps) => {
   return (
-    <div
+    <motion.div
+      whileTap={{ scale: 0.9 }}
       onClick={onClick}
-      className={`relative flex w-24 cursor-pointer select-none flex-col items-center justify-center rounded-md p-3 ${
+      className={`relative flex h-24 w-24 cursor-pointer select-none flex-col items-center justify-center rounded-md p-3 ${
         quantity > 0
           ? "bg-dish-selected hover:bg-dish-selected-hover"
           : "bg-dish-hover"
@@ -21,7 +24,9 @@ export const DishCard = ({ onClick, name, quantity = 0 }: DishProps) => {
         </div>
       )}
       <Image width={32} height={32} src="/images/dish/sushi.png" alt={name} />
-      <div className="mt-2 text-sm font-bold text-white">{name}</div>
-    </div>
+      <div className="mt-2 text-center text-sm font-bold text-white">
+        {name}
+      </div>
+    </motion.div>
   );
 };
