@@ -1,2 +1,2 @@
-export * from "./DishCard";
+export * from "./Card";
 export * from "./SearchBar";

@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import { AnimatePresence, motion } from "framer-motion";
 
 import type { TableDish, Dish } from "~/types";
-import { DishCard, SearchBar } from "~/components";
+import { Card, SearchBar } from "~/components";
 import dishes from "~/_data/dishes.json";
 
 const TablePage: NextPage = () => {
@@ -63,7 +63,7 @@ const TablePage: NextPage = () => {
                 initial={{ scale: 0 }}
                 exit={{ scale: 0 }}
               >
-                <DishCard
+                <Card
                   onClick={() => handleRemoveDish(dish)}
                   name={dish.name}
                   quantity={dish.quantity}
@@ -75,7 +75,7 @@ const TablePage: NextPage = () => {
         <h2 className="mt-4 p-6 text-2xl">Piatti disponibili</h2>
         <div className="m-auto mt-2 grid w-min grid-cols-[repeat(3,max-content)] gap-1 md:grid-cols-[repeat(6,max-content)]">
           {filteredDishes.map((dish) => (
-            <DishCard
+            <Card
               key={dish.id}
               onClick={() => handleAddDish(dish)}
               name={dish.name}

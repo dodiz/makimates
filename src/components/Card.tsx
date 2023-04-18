@@ -1,21 +1,21 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-type DishProps = {
+type CardProps = {
   name: string;
   quantity?: number;
   onClick: () => void;
 };
 
-export const DishCard = ({ onClick, name, quantity = 0 }: DishProps) => {
+export const Card = ({ onClick, name, quantity = 0 }: CardProps) => {
   return (
     <motion.div
       whileTap={{ scale: 0.9 }}
       onClick={onClick}
       className={`relative flex h-24 w-24 cursor-pointer select-none flex-col items-center justify-center rounded-md p-3 ${
         quantity > 0
-          ? "bg-dish-selected hover:bg-dish-selected-hover"
-          : "bg-dish-hover"
+          ? "bg-[#d55a5a] hover:bg-[#b94848]"
+          : "bg-[#5A887C] hover:bg-[#3A685C]"
       }`}
     >
       {quantity !== 0 && (
